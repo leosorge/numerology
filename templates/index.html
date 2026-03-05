@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numerologia Premium - Scopri il Tuo Destino</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --bg: #0f172a;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+            background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 95%;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 300;
+            color: #94a3b8;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+        }
+
+        .api-group {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--glass-border);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .results {
+            margin-top: 40px;
+            display: none;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .result-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            transition: transform 0.3s;
+        }
+
+        .result-item:hover {
+            transform: scale(1.02);
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 10px;
+        }
+
+        .result-title {
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .result-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .result-text {
+            line-height: 1.7;
+            color: #cbd5e1;
+            font-style: italic;
+            white-space: pre-line;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--secondary);
+            font-weight: 300;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Numerologia Antica</h1>
+            <p>Inserisci i tuoi dati per rivelare le energie che guidano il tuo percorso.</p>
+        </header>
+
+        <main class="glass-card">
+            <div class="form-grid">
+                <div class="input-group">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" placeholder="es. Mario" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label for="surname">Cognome</label>
+                    <input type="text" id="surname" placeholder="es. Rossi" autocomplete="off">
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="birthdate">Data di Nascita</label>
+                <input type="text" id="birthdate" placeholder="GG/MM/AAAA" autocomplete="off">
+            </div>
+
+            <div class="input-group api-group">
+                <label for="apikey">Gemini API Key (Richiesta per riscrivere i testi)</label>
+                <input type="password" id="apikey" placeholder="Inserisci qui la tua API Key di Google AI"
+                    autocomplete="off">
+            </div>
+
+            <button onclick="calculate()">Descrivi la mia anima</button>
+
+            <div class="loader" id="loader">L'IA sta riscrivendo le trame del tuo destino...</div>
+
+            <div class="results" id="results">
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="result-header">
+                            <span class="result-title">Consonanti (Ego Esterno)</span>
+                            <span class="result-number" id="num-cons"></span>
+                        </div>
+                        <div class="result-text" id="text-cons"></div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-header">
+                            <span class="result-title">Vocali (Anima Interna)</span>
+                            <span class="result-number" id="num-vocs"></span>
+                        </div>
+                        <div class="result-text" id="text-vocs"></div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-header">
+                            <span class="result-title">Totale (Destino)</span>
+                            <span class="result-number" id="num-tots"></span>
+                        </div>
+                        <div class="result-text" id="text-tots"></div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-header">
+                            <span class="result-title">Data (Percorso)</span>
+                            <span class="result-number" id="num-data"></span>
+                        </div>
+                        <div class="result-text" id="text-data"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        async function calculate() {
+            const name = document.getElementById('name').value;
+            const surname = document.getElementById('surname').value;
+            const birthdate = document.getElementById('birthdate').value;
+            const apikey = document.getElementById('apikey').value;
+
+            if (!name || !surname || !birthdate) {
+                alert("Completa tutti i campi!");
+                return;
+            }
+
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+
+            try {
+                const response = await fetch('/calculate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, surname, birthdate, apikey })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('num-cons').innerText = data.output_cons;
+                    document.getElementById('text-cons').innerText = data.text_cons;
+
+                    document.getElementById('num-vocs').innerText = data.output_vocs;
+                    document.getElementById('text-vocs').innerText = data.text_vocs;
+
+                    document.getElementById('num-tots').innerText = data.output_tots;
+                    document.getElementById('text-tots').innerText = data.text_tots;
+
+                    document.getElementById('num-data').innerText = data.output_data;
+                    document.getElementById('text-data').innerText = data.text_data;
+
+                    document.getElementById('results').style.display = 'block';
+                } else {
+                    alert("Errore: " + data.error);
+                }
+            } catch (e) {
+                alert("Errore di connessione al server.");
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>
