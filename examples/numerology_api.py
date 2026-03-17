@@ -147,5 +147,3 @@ Missing required fields for the selected mode -> 400
 
 See runnable example in examples/numerology_api.py.
 
-
-Se vuoi, al prossimo messaggio ti do anche i click esatti su GitHub Web per creare i due file in 1 minuto.
