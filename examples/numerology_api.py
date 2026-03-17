@@ -98,5 +98,6 @@ def numerology() -> tuple:
 
     return jsonify({"mode": mode, **result.as_dict()})
 
+# QUESTE RIGHE DEVONO ESSERE CONTRO IL MARGINE SINISTRO
 if __name__ == "__main__":
     app.run(debug=True)
