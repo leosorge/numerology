@@ -12,6 +12,8 @@ from logic import calculate_numerology
 from data import arr_vocs, arr_cons, arr_tots, arr_data
 import google.generativeai as genai
 
+numerologia_results = [] # Inizializzazione di sicurezza
+
 # ---------------------------
 # 1. REWRITE TEXT
 # ---------------------------
