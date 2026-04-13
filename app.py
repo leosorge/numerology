@@ -61,12 +61,12 @@ def calculate_api(name, surname, birthdate, api_key):
         "text_data": rewrite_text_cached(t_data, api_key)
     }
 
-# 4 PARSER
+# 4. PARSER
 
 def parse_txt(file_content):
     people = []
-    blocks = re.split(r"=+\n", file_content)
-
+# originale    blocks = re.split(r"=+\n", file_content)
+    blocks = re.split(r"=+[\r\t ]*\n", file_content)
     for i, block in enumerate(blocks):
         lines = [l.strip() for l in block.split("\n") if l.strip()]
 
