@@ -263,12 +263,12 @@ def generate_txt(results, people):
     return "\n\n---\n\n".join(output_lines)
 
 
-            # 9. DOWNLOAD
-            txt_output = generate_txt(results, valid_people)
+    # 9. DOWNLOAD
+    txt_output = generate_txt(results, valid_people)
 
-            st.download_button(
-                "📥 Scarica risultati TXT",
-                txt_output,
-                file_name="numerologia_results.txt",
-                mime="text/plain"
-            )
+    st.download_button(
+        "📥 Scarica risultati TXT",
+        txt_output,
+        file_name="numerologia_results.txt",
+        mime="text/plain"
+    )
