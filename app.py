@@ -1,4 +1,7 @@
 # NUMMY
+
+# Versione ancora con la parte API di AI non inserita
+
 import re
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
