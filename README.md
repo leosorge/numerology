@@ -1,6 +1,6 @@
 # 🔮 Numerologia Antica & AI
 
-Una web application premium costruita con **Python (Flask)** che esplora le vibrazioni numeriche del tuo nome e della tua data di nascita, potenziata dall'intelligenza artificiale di **Google Gemini**.
+Una web application premium costruita con **Python (streamlit)** che esplora le vibrazioni numeriche del tuo nome e della tua data di nascita, sviluppata con Claude (free) e ChatGPT (free) e potenziata dall'intelligenza artificiale di **Google Gemini**.
 
 ![Screenshot dell'App](https://via.placeholder.com/800x450?text=Numerologia+Antica+UI)
 
