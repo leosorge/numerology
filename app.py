@@ -216,7 +216,54 @@ if uploaded_file:
 
             st.success("✅ Completato!")
 
-            # DOWNLOAD
+    # NEL CORPO PRINCIPALE DI STREAMLIT - AGGIUNTA NELLA FASE FINALE 
+
+# 1. Stampa a schermo dei risultati
+st.subheader("Risultati Numerologia")
+for res in numerologia_results:
+    st.write(res)
+    st.divider()
+
+
+# STAMPA A SCHERMO - AGGIUNTA NELLA FASE FINALE
+
+def generate_txt(results, people):
+    output_lines = []
+    
+    for i, person in enumerate(people):
+        # 1. Recupero dati base
+        name = person.get("name", "N/A")
+        surname = person.get("surname", "N/A")
+        birthdate_str = person.get("birthdate", "")
+        
+        # Calcolo dell'età (basato sulla data di nascita fornita)
+        try:
+            birth_date = datetime.strptime(birthdate_str, "%d/%m/%Y")
+            today = datetime.now()
+            age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+        except:
+            age = "N/D"
+
+        # 2. Pulizia testo di descrizione
+        # Prendiamo il risultato numerologico corrispondente
+        desc_originale = results[i] if i < len(results) else ""
+        
+        # Rimuoviamo i numeri iniziali (es. "1. ", "10 - ") e puliamo gli spazi
+        # Il pattern r"^\s*\d+[\s\.\-\/]*" cerca numeri a inizio stringa seguiti da punti o trattini
+        desc_pulita = re.sub(r"^\s*\d+[\s\.\-\/]*", "", desc_originale)
+        
+        # Sostituiamo gli "a capo" con uno spazio e rimuoviamo spazi doppi
+        desc_consecutiva = " ".join(desc_pulita.split())
+
+        # 3. Formattazione blocco personaggio
+        block = f"{name} {surname}\nETA: {age}\n{desc_consecutiva}"
+        output_lines.append(block)
+
+    # Uniamo tutti i personaggi con un doppio a capo per leggibilità nel file
+    return "\n\n---\n\n".join(output_lines)
+
+
+            # 9. DOWNLOAD
             txt_output = generate_txt(results, valid_people)
 
             st.download_button(
