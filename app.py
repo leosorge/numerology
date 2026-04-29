@@ -17,7 +17,7 @@ import base64
 import streamlit as st
 from logic import calculate_numerology
 from data import arr_vocs, arr_cons, arr_tots, arr_data
-from llm_client import render_provider_selector, generate
+from llm_client import render_provider_selector, generate, active_provider_name
 
 # ── Favicon via base64 ────────────────────────────────────────────────────────
 def _favicon_b64() -> str:
@@ -240,6 +240,10 @@ if uploaded_file:
             status   = st.empty()
             results  = []
             total    = len(valid_people)
+
+            # Legge il provider nel thread principale prima di lanciare i worker
+            # (st.session_state non è thread-safe nei worker Streamlit)
+            _ = active_provider_name()
 
             with ThreadPoolExecutor(max_workers=5) as executor:
                 futures = {
