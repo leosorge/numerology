@@ -1,6 +1,5 @@
 flask
 gunicorn
-openai
 python-dotenv
-google-generativeai
 streamlit
+git+https://github.com/leosorge/llm-client.git

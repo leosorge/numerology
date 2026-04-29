@@ -17,7 +17,7 @@ import base64
 import streamlit as st
 from logic import calculate_numerology
 from data import arr_vocs, arr_cons, arr_tots, arr_data
-import google.generativeai as genai
+from llm_client import render_provider_selector, generate
 
 # ── Favicon via base64 ────────────────────────────────────────────────────────
 def _favicon_b64() -> str:
@@ -40,24 +40,24 @@ st.set_page_config(
     layout="centered",
 )
 
+render_provider_selector()
+
 # ── 1. REWRITE TEXT ───────────────────────────────────────────────────────────
 
-def rewrite_text(text: str, api_key: str) -> str:
-    if not api_key or api_key.strip() == "":
-        return text.replace("/n", "\n")
+def rewrite_text(text: str) -> str:
     try:
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-1.5-flash-8b")
-        prompt = f"riscrivi questo testo senza cambiarne il significato:\n{text}"
-        response = model.generate_content(prompt)
-        return response.text.strip()
+        return generate(
+            prompt=f"riscrivi questo testo senza cambiarne il significato:\n{text}",
+            max_tokens=1024,
+            temperature=0.3,
+        )
     except Exception:
         return text.replace("/n", "\n")
 
 
 # ── 2. CORE LOGIC ─────────────────────────────────────────────────────────────
 
-def calculate_api(name: str, surname: str, birthdate: str, api_key: str) -> dict:
+def calculate_api(name: str, surname: str, birthdate: str) -> dict:
     results = calculate_numerology(name, surname, birthdate)
 
     def get_text(arr, val):
@@ -71,10 +71,10 @@ def calculate_api(name: str, surname: str, birthdate: str, api_key: str) -> dict
         "output_vocs": results["output_vocs"],
         "output_tots": results["output_tots"],
         "output_data": results["output_data"],
-        "text_cons":   rewrite_text(get_text(arr_cons, results["output_cons"]), api_key),
-        "text_vocs":   rewrite_text(get_text(arr_vocs, results["output_vocs"]), api_key),
-        "text_tots":   rewrite_text(get_text(arr_tots, results["output_tots"]), api_key),
-        "text_data":   rewrite_text(get_text(arr_data, results["output_data"]), api_key),
+        "text_cons":   rewrite_text(get_text(arr_cons, results["output_cons"])),
+        "text_vocs":   rewrite_text(get_text(arr_vocs, results["output_vocs"])),
+        "text_tots":   rewrite_text(get_text(arr_tots, results["output_tots"])),
+        "text_data":   rewrite_text(get_text(arr_data, results["output_data"])),
     }
 
 
@@ -158,9 +158,6 @@ def show_result(r: dict):
 
 st.title("🔢 NUMMY · Numerologia")
 
-api_key = st.text_input("Gemini API Key (opzionale)", type="password",
-                        help="Lascia vuoto per usare i testi originali senza riscrittura AI.")
-
 st.divider()
 
 # ── SEZIONE SINGOLA ───────────────────────────────────────────────────────────
@@ -177,7 +174,7 @@ if st.button("Calcola", type="primary"):
         st.error("Compila tutti i campi.")
     else:
         with st.spinner("Calcolo in corso…"):
-            r = calculate_api(name.strip(), surname.strip(), birthdate.strip(), api_key)
+            r = calculate_api(name.strip(), surname.strip(), birthdate.strip())
         st.session_state["singolo"] = r
 
 # Mostra risultato singolo se presente
@@ -248,7 +245,7 @@ if uploaded_file:
                 futures = {
                     executor.submit(
                         calculate_api,
-                        p["name"], p["surname"], p["birthdate"], api_key
+                        p["name"], p["surname"], p["birthdate"]
                     ): p
                     for p in valid_people
                 }
